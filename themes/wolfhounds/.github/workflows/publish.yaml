@@ -1,0 +1,21 @@
+name: '🚀 Build and Publish wolfhounds'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/*.json'
+
+jobs:
+  build_publish:
+    uses: ./.github/workflows/_meta.yaml
+    if: ${{ contains(github.repository_owner, 'carhnds') }}
+    with:
+      publish: true
+    secrets:
+      token: ${{ secrets.JF_BOT_TOKEN }}
